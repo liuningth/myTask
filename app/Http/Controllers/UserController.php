@@ -31,6 +31,7 @@ class UserController extends Controller
                 'data' => []
             ]);
         }
+        
         return $this->json([
             'code' => 200,
             'msg' => 'login success',
