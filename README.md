@@ -1,3 +1,5 @@
+1.folder [sql] include about sql
+2.folder [front_code] include about front end code
 
 * Build a simple signin where admin can login into the system. 
 * Once admin login, they could:
