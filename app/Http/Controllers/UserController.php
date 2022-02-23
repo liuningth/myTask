@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UserRequest;
+use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
@@ -15,31 +16,11 @@ class UserController extends Controller
      */
     public function login(UserRequest $request): string
     {
+        //$admin = DB::table('admin_user')->where('name', $name)->first(['pass', 'id']);
+        $admin = app(UserRepository::class)
+            ->where('name', $request->post('name'))
+            ->first(['pass', 'id']);
 
-        $name = $request->post('name');
-        $pass = $request->post('pass');
-        $admin = DB::table('admin_user')->where('name', $name)->first(['pass', 'id']);
-        if (empty($admin)) {
-            return $this->json([
-                'code' => 400,
-                'msg' => 'user is not exists',
-                'data' => []
-            ]);
-        }
-        if ($admin->pass != md5($pass)) {
-            return $this->json([
-                'code' => 400,
-                'msg' => 'pass is wrong',
-                'data' => []
-            ]);
-        }
-
-        return $this->json([
-            'code' => 200,
-            'msg' => 'login success',
-            'data' => [
-                'id' => $admin->id
-            ]
-        ]);
+        return view('admin.login.index', compact('admin'));
     }
 }
