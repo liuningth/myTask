@@ -7,20 +7,19 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class User.
+ * Class Product.
  *
  * @package namespace App\Entities;
  */
-class User extends Model implements Transformable
+class Product extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $primaryKey='id';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'pass'];
+    protected $fillable = ['name','sku','image',''];
 
 }

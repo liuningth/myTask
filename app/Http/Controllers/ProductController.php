@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
+use App\Entities\Product;
 
 class ProductController extends Controller
 {
+    /**
+     * @var \Illuminate\Contracts\Foundation\Application|mixed
+     */
+    protected $ProductRepository;
+
+    public function __construct()
+    {
+        $this->ProductRepository = app(ProductRepository::class);
+    }
+
     //table name
     public $table = 'product';
 
@@ -16,21 +28,18 @@ class ProductController extends Controller
      */
     public function list(): string
     {
-        $data = $this->db()->orderBy('created_at', 'desc')
+        $products = $this->ProductRepository
+            ->orderBy('created_at', 'desc')
             ->paginate(10, ['id', 'name', 'sku', 'image', 'created_at'])
             ->toArray();
-        $productList = &$data['data'];
+        $productList = &$products['data'];
 
         foreach ($productList as &$value) {
             $value->created_at = date('Y-m-d H:i:s', $value->created_at);
             $value->image = $this->getDomain() . $value->image;
         }
 
-        return $this->json([
-            'code' => 200,
-            'msg' => 'products',
-            'data' => $data
-        ]);
+        return view('admin.product.index', compact('products'));
     }
 
     /**
@@ -40,33 +49,21 @@ class ProductController extends Controller
      */
     public function create(ProductRequest $request): string
     {
-        $db = $this->db();
         $name = $request->post('name');
-        $sku = "";
         do {
             $sku = $this->randStr();
-            $exists = $db->where('sku', $sku)->exists();
+            $exists = $this->ProductRepository->where('sku', $sku)->exists();
         } while ($exists);
         $image = $request->post('image');
 
-        $res = $db->insert([
+        $res = $this->ProductRepository->create([
             'name' => $name,
             'sku' => $sku,
             'image' => $image,
             'created_at' => time()
         ]);
-        if ($res) {
-            return $this->json([
-                'code' => 200,
-                'msg' => 'add success',
-                'data' => []
-            ]);
-        }
-        return $this->json([
-            'code' => 400,
-            'msg' => 'add fail',
-            'data' => []
-        ]);
+
+        return view('admin.login.index', compact('res'));
     }
 
     /**
@@ -78,7 +75,7 @@ class ProductController extends Controller
     {
         $id = $request->input('id');
 
-        $data = $this->db()->where('id', $id)->first(['id', 'name', 'sku', 'image', 'created_at', 'updated_at']);
+        $data = $this->ProductRepository->where('id', $id)->first(['id', 'name', 'sku', 'image', 'created_at', 'updated_at']);
         $data->created_at = date('Y-m-d H:i:s', $data->created_at);
         $data->updated_at = $data->updated_at ? date('Y-m-d H:i:s', $data->updated_at) : null;
         $data->image = $this->getDomain() . $data->image;
@@ -92,37 +89,12 @@ class ProductController extends Controller
 
     /**
      * product edit
-     * @param ProductRequest $request
+     * @param Product $product
      * @return string
      */
-    public function edit(ProductRequest $request): string
+    public function edit(Product $product): string
     {
-        $id = $request->input('id');
-        $image = $request->input('image');
-        $name = $request->input('name');
-        $imageDomain = explode($this->getDomain(), $image);
-        $imageDomainCount = count($imageDomain);
-        if ($imageDomainCount > 1) {
-            $image = $imageDomain[$imageDomainCount - 1];
-        }
-
-        $res = $this->db()->where('id', $id)->update([
-            'image' => $image,
-            'name' => $name,
-            'updated_at' => time()
-        ]);
-        if ($res) {
-            return $this->json([
-                'code' => 200,
-                'msg' => 'edit success',
-                'data' => []
-            ]);
-        }
-        return $this->json([
-            'code' => 400,
-            'msg' => 'edit fail',
-            'data' => []
-        ]);
+        return view('admin.product.edit', compact('product'));
     }
 
     /**
@@ -134,7 +106,7 @@ class ProductController extends Controller
     {
         $id = $request->input('id');
 
-        $res = $this->db()->delete($id);
+        $res = $this->ProductRepository->delete($id);
 
         if ($res) {
             return $this->json([
