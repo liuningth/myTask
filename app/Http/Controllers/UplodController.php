@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UploadRequest;
 
-class UplodController extends Controller
+class uploadController extends Controller
 {
     /**
      * upload picture
-     * @param Request $request
+     * @param UploadRequest $request
      * @return string
      */
-    public function uplodImage(Request $request): string
+    public function uploadImage(UploadRequest $request): string
     {
         $path = '/upload/';
-        $filePath = $request->image->store('images', 'uplod');
+        $filePath = $request->image->store('images', 'upload');
 
         if ($filePath) {
             $image = $path . $filePath;

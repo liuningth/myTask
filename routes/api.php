@@ -36,4 +36,4 @@ Route::prefix('coupon')->group(function () {
 });
 
 //upload picture
-Route::post('uplodImage', 'UplodController@uplodImage');
+Route::post('uploadImage', 'uploadController@uploadImage');

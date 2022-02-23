@@ -27,7 +27,7 @@
           </td>
         </tr>
       </tbody>
-    </table> 
+    </table>
     <div style="margin: 0 auto; text-align: center">
       <el-pagination
         background
@@ -46,7 +46,7 @@
             style="width: 400px"
             class="no-print upload-demo"
             drag
-            action="/api/uplodImage"
+            action="/api/uploadImage"
             multiple
             name="image"
             accept="image/*"
@@ -58,7 +58,7 @@
             <div class="el-upload__tip" slot="tip">只能上传jpg/jpeg/png文件</div>
           </el-upload>
         </el-form-item>
-        
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
@@ -76,7 +76,7 @@
             style="width: 400px"
             class="no-print upload-demo"
             drag
-            action="/api/uplodImage"
+            action="/api/uploadImage"
             multiple
             name="image"
             accept="image/*"
@@ -88,7 +88,7 @@
             <div class="el-upload__tip" slot="tip">只能上传jpg/jpeg/png文件</div>
           </el-upload>
         </el-form-item>
-        
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
@@ -143,7 +143,7 @@ export default {
         }
         return extension
     },
-        
+
     // 上传失败
     errorUpload(err) {
         this.$message({
@@ -190,7 +190,7 @@ export default {
         this.total = res.data.total
         this.closeFullScreen()
       })
-      
+
     },
 
     addSubmit() {

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Mail\Message;
 use Illuminate\Database\Query\Builder;
+use App\Http\Requests\CouponRequest;
 
 class CouponController extends Controller
 {
@@ -64,10 +65,10 @@ class CouponController extends Controller
 
     /**
      * create coupon
-     * @param Request $request
+     * @param CouponRequest $request
      * @return string
      */
-    public function create(Request $request): string
+    public function create(CouponRequest $request): string
     {
         $time = time();
         $money = $request->post('money');
@@ -135,7 +136,7 @@ class CouponController extends Controller
      * @param Request $request
      * @return string
      */
-    public function details(Request $request): string
+    public function details(CouponRequest $request): string
     {
         $id = $request->input('id');
 
@@ -162,7 +163,7 @@ class CouponController extends Controller
      * @param Request $request
      * @return string
      */
-    public function edit(Request $request): string
+    public function edit(CouponRequest $request): string
     {
         $time = time();
         $id = $request->input('id');
@@ -212,7 +213,7 @@ class CouponController extends Controller
      * @param Request $request
      * @return string
      */
-    public function delete(Request $request): string
+    public function delete(CouponRequest $request): string
     {
         $id = $request->input('id');
 

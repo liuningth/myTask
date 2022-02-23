@@ -65,11 +65,12 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
-        'uplod' => [
+        'upload' => [
             'driver'     => 'local',
             'root'       => public_path('upload'),
             'visibility' => 'public',
-            'url'        => asset(''),
+            //'url'        => asset(''),
+            'url'        => '',
             'publicPath' => 'upload/'
         ],
     ],

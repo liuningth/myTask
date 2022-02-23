@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
     /**
      * login
-     * @param Request $request
+     * @param UserRequest $request
      * @return string
      */
-    public function login(Request $request): string
+    public function login(UserRequest $request): string
     {
+
         $name = $request->post('name');
         $pass = $request->post('pass');
         $admin = DB::table('admin_user')->where('name', $name)->first(['pass', 'id']);
@@ -31,7 +33,7 @@ class UserController extends Controller
                 'data' => []
             ]);
         }
-        
+
         return $this->json([
             'code' => 200,
             'msg' => 'login success',

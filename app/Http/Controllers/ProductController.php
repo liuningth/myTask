@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -34,10 +35,10 @@ class ProductController extends Controller
 
     /**
      * add product
-     * @param Request $request
+     * @param ProductRequest $request
      * @return string
      */
-    public function create(Request $request): string
+    public function create(ProductRequest $request): string
     {
         $db = $this->db();
         $name = $request->post('name');
@@ -70,10 +71,10 @@ class ProductController extends Controller
 
     /**
      * product detail
-     * @param Request $request
+     * @param ProductRequest $request
      * @return string
      */
-    public function details(Request $request): string
+    public function details(ProductRequest $request): string
     {
         $id = $request->input('id');
 
@@ -91,10 +92,10 @@ class ProductController extends Controller
 
     /**
      * product edit
-     * @param Request $request
+     * @param ProductRequest $request
      * @return string
      */
-    public function edit(Request $request): string
+    public function edit(ProductRequest $request): string
     {
         $id = $request->input('id');
         $image = $request->input('image');
@@ -126,10 +127,10 @@ class ProductController extends Controller
 
     /**
      * del product
-     * @param Request $request
+     * @param ProductRequest $request
      * @return string
      */
-    public function delete(Request $request): string
+    public function delete(ProductRequest $request): string
     {
         $id = $request->input('id');
 
