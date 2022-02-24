@@ -27,6 +27,6 @@ class UserController extends Controller
     {
         $admin = $this->userRepository->findOne();
 
-        return view('admin.login.index', compact('admin'));
+        return view('admin.index', compact('admin'));
     }
 }

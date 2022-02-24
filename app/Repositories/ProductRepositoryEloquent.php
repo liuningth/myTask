@@ -30,7 +30,7 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
      */
     public function findAll()
     {
-        $products = Product::all();
+        $products = App\Product::all();
         foreach ($products as &$value) {
             $value->created_at = date('Y-m-d H:i:s', $value->created_at);
             $value->image = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $value->image;
@@ -45,7 +45,7 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
      */
     public function findOne($id)
     {
-        return Product::find($id);
+        return App\Product::find($id);
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
      */
     public function deleteOne($id)
     {
-        return Product::where('id', $id)->delete();
+        return App\Product::where('id', $id)->delete();
     }
 
 
