@@ -7,6 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\UserRepository;
 use App\Entities\User;
 use App\Validators\UserValidator;
+use App\Traits\CacheableRepository;
 
 /**
  * Class UserRepositoryEloquent.
@@ -29,9 +30,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      * @param string $name
      * @return \Illuminate\Support\Collection|\App\Models\Tenant\User[]
      */
-    public function getUserByName(string $name)
+    public function findOne(string $name)
     {
-        return $this->findByField('name', $name);
+        return App\Entities\User::where('name', $name)->get();
     }
 
 

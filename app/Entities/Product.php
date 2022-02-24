@@ -15,11 +15,13 @@ class Product extends Model implements Transformable
 {
     use TransformableTrait;
 
+    protected $table = 'products';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name','sku','image',''];
+    protected $fillable = ['name','sku','image'];
 
 }

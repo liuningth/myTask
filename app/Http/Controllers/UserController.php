@@ -9,6 +9,15 @@ use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
+    protected UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        parent::__construct();
+
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * login
      * @param UserRequest $request
@@ -16,10 +25,7 @@ class UserController extends Controller
      */
     public function login(UserRequest $request): string
     {
-        //$admin = DB::table('admin_user')->where('name', $name)->first(['pass', 'id']);
-        $admin = app(UserRepository::class)
-            ->where('name', $request->post('name'))
-            ->first(['pass', 'id']);
+        $admin = $this->userRepository->findOne();
 
         return view('admin.login.index', compact('admin'));
     }

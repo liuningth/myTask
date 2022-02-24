@@ -8,6 +8,15 @@
     <title>Document</title>
 </head>
 <body>
-
+    <table>
+        <form action="/login">
+            用户名：
+            <input type="text">
+            密码：
+            <input type="text">
+            提交
+            <input type="submit">
+        </form>
+    </table>
 </body>
 </html>

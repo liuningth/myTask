@@ -12,15 +12,13 @@ class ProductController extends Controller
     /**
      * @var \Illuminate\Contracts\Foundation\Application|mixed
      */
-    protected $ProductRepository;
+    protected ProductRepository $productRepository;
 
-    public function __construct()
+    public function __construct(ProductRepository $productRepository)
     {
-        $this->ProductRepository = app(ProductRepository::class);
+        $this->$productRepository = $productRepository;
     }
 
-    //table name
-    public $table = 'product';
 
     /**
      * product list
@@ -28,16 +26,7 @@ class ProductController extends Controller
      */
     public function list(): string
     {
-        $products = $this->ProductRepository
-            ->orderBy('created_at', 'desc')
-            ->paginate(10, ['id', 'name', 'sku', 'image', 'created_at'])
-            ->toArray();
-        $productList = &$products['data'];
-
-        foreach ($productList as &$value) {
-            $value->created_at = date('Y-m-d H:i:s', $value->created_at);
-            $value->image = $this->getDomain() . $value->image;
-        }
+        $products = $this->ProductRepository->findAll();
 
         return view('admin.product.index', compact('products'));
     }
@@ -49,21 +38,7 @@ class ProductController extends Controller
      */
     public function create(ProductRequest $request): string
     {
-        $name = $request->post('name');
-        do {
-            $sku = $this->randStr();
-            $exists = $this->ProductRepository->where('sku', $sku)->exists();
-        } while ($exists);
-        $image = $request->post('image');
-
-        $res = $this->ProductRepository->create([
-            'name' => $name,
-            'sku' => $sku,
-            'image' => $image,
-            'created_at' => time()
-        ]);
-
-        return view('admin.login.index', compact('res'));
+        return view('admin.product.index');
     }
 
     /**
@@ -75,16 +50,9 @@ class ProductController extends Controller
     {
         $id = $request->input('id');
 
-        $data = $this->ProductRepository->where('id', $id)->first(['id', 'name', 'sku', 'image', 'created_at', 'updated_at']);
-        $data->created_at = date('Y-m-d H:i:s', $data->created_at);
-        $data->updated_at = $data->updated_at ? date('Y-m-d H:i:s', $data->updated_at) : null;
-        $data->image = $this->getDomain() . $data->image;
+        $detail = $this->ProductRepository->findOne($id);
 
-        return $this->json([
-            'code' => 200,
-            'msg' => 'product detail',
-            'data' => $data
-        ]);
+        return view('admin.login.index', compact('detail'));
     }
 
     /**
@@ -106,19 +74,8 @@ class ProductController extends Controller
     {
         $id = $request->input('id');
 
-        $res = $this->ProductRepository->delete($id);
+        $res = $this->ProductRepository->deleteOne($id);
 
-        if ($res) {
-            return $this->json([
-                'code' => 200,
-                'msg' => 'del success',
-                'data' => []
-            ]);
-        }
-        return $this->json([
-            'code' => 400,
-            'msg' => 'del fail',
-            'data' => []
-        ]);
+        return view('admin.product.index', compact('res'));
     }
 }

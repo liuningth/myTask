@@ -15,7 +15,8 @@ class User extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $primaryKey='id';
+    protected $primaryKey = 'id';
+    protected $table = 'user';
     /**
      * The attributes that are mass assignable.
      *

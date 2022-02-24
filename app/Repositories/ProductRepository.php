@@ -11,5 +11,29 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface ProductRepository extends RepositoryInterface
 {
-    //
+    /**
+     *
+     * select all
+     * @return mixed
+     */
+    public function findAll();
+
+
+    /**
+     *
+     * find detail
+     * @return mixed
+     */
+    public function findOne($id);
+
+
+    /**
+     *
+     * delete one
+     * @return mixed
+     */
+    public function deleteOne($id);
+
+
+
 }

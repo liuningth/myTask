@@ -16,5 +16,5 @@ interface UserRepository extends RepositoryInterface
      * @param string $name
      * @return User[]
      */
-    public function getUserByName(string $name);
+    public function findOne(string $name);
 }
